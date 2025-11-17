@@ -117,6 +117,10 @@ This project is released under the MIT License. See `LICENSE` for details.
 
 ---
 
+## Dependences
+
+* Make sense that this project in current state needs to include two more projects of my github: libft and banner.
+
 ## Notes
 
 * This RTOS is educational and does not include preemptive scheduling or hardware-specific drivers.
