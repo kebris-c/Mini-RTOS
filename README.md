@@ -44,24 +44,6 @@ This project serves as a foundation for understanding the internals of an RTOS w
 ## Project Structure
 
 ```
-
-minirtos/
-├── src/                 # Source files for the RTOS
-│   ├── main.c           # Entry point
-│   ├── rtos.c           # Scheduler implementation
-│   └── utils.c          # Utility functions for the RTOS
-├── objs/                # Object files generated during compilation
-├── bin/                 # Compiled binaries and archives
-│   └── minirtos.a
-├── libft/               # Custom utility library
-│   ├── src/             # Source files for libft
-│   └── bin/             # Compiled libft library (libft.a)
-├── banner/              # Banner/visual output module
-│   ├── src/             # Source files for banner
-│   └── bin/             # Compiled banner library (banner.a)
-├── Makefile             # Main Makefile coordinating compilation
-└── README.md            # Project documentation
-
 ````
 
 **Key modules:**
