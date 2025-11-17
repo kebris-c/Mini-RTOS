@@ -1,15 +1,28 @@
-#include "../include/rtos.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rtos.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kebris-c <kebris-c@student.42madrid.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/17 18:47:44 by kebris-c          #+#    #+#             */
+/*   Updated: 2025/11/17 21:40:40 by kebris-c         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*==============================================
+#include "rtos.h"
+
+/*==============================================================================
 	INTERNAL STATE (static globals)
-================================================*/
-static t_tcb	g_task_list[MAX_TASKS];
-static t_tcb	*g_curr_task;
-static int		g_num_tasks;
+==============================================================================*/
+static t_tcb		g_task_list[MAX_TASKS];
+static t_tcb		*g_curr_task;
+static int			g_num_tasks;
+static t_msg_queue	g_queue;
 
-/*==============================================
+/*==============================================================================
 	INITIALIZATION
-================================================*/
+==============================================================================*/
 int	rtos_init(void)
 {
 	memset(g_task_list, 0, sizeof(g_task_list));
@@ -18,9 +31,9 @@ int	rtos_init(void)
 	return (0);
 }
 
-/*==============================================
+/*==============================================================================
 	TASK MANAGEMENT
-================================================*/
+==============================================================================*/
 int	rtos_task_create(t_task_func func, void *arg, unsigned int period_ms)
 {
 	t_tcb	*task;
@@ -38,15 +51,17 @@ int	rtos_task_create(t_task_func func, void *arg, unsigned int period_ms)
 	return (task->id);
 }
 
-/*==============================================
+/*==============================================================================
 	SCHEDULING
-================================================*/
+==============================================================================*/
 void	rtos_start(void)
 {
 	unsigned long	now;
+	unsigned long	last_print_info;
 	t_tcb			*task;
 	int				id;
 
+	last_print_info = 0;
 	printf("[RTOS] Starting scheduler with %d tasks\n", g_num_tasks);
 	while (1)
 	{
@@ -65,7 +80,11 @@ void	rtos_start(void)
 			if (task->period_ms > 0)
 				task->next_run = now + task->period_ms;
 		}
-		task_print_info();
+		if (now - last_print_info >= 5000)
+		{
+			task_print_info();
+			last_print_info = now;
+		}
 		g_curr_task = NULL;
 		usleep(1000);
 	}
@@ -84,6 +103,9 @@ void	rtos_delay(unsigned int ms)
 	rtos_yield();
 }
 
+/*==============================================================================
+	TESTING
+==============================================================================*/
 void	task_print_info(void)
 {
 	unsigned long	now;

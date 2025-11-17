@@ -1,12 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rtos.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kebris-c <kebris-c@student.42madrid.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/17 18:46:17 by kebris-c          #+#    #+#             */
+/*   Updated: 2025/11/17 21:28:30 by kebris-c         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RTOS_H
 # define RTOS_H
 
 /*		HEADERS		*/
+# include "libft/include/libft.h"
+# include "banner/include/banner.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
 # include <stdint.h>
+# include <string.h>
 
 /*		DEFINES		*/
 # define MAX_TASKS 16
@@ -50,6 +65,7 @@ int				rtos_recv_message(int queue_id, void *buffer, size_t *size);
 void			rtos_start(void);
 void			rtos_delay(unsigned int ms);
 void			rtos_yield(void);
+
 unsigned long	get_time_ms(void);
 
 void			task_print_info(void);

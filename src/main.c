@@ -1,41 +1,54 @@
-#include "../include/rtos.h"
-#include "../print_banner/include/banner.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kebris-c <kebris-c@student.42madrid.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/17 18:44:49 by kebris-c          #+#    #+#             */
+/*   Updated: 2025/11/17 21:35:44 by kebris-c         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*==============================================
+#include "rtos.h"
+
+/*==============================================================================
     TEST TASKS
-================================================*/
-
+==============================================================================*/
 void	task_a(void *arg)
 {
-    static int	count == 0;
+    static int	count = 0;
 
+	(void)arg;
 	count++;
 	printf("[Task A] Running (count=%d)\n", count);
 }
 
 void	task_b(void *arg)
 {
-	static int	count == 0;
+	static int	count = 0;
 
+	(void)arg;
 	count++;
 	printf("[Task B] Running (count=%d)\n", count);
 }
 
 void	task_c(void *arg)
 {
-	static int	count == 0;
+	static int	count = 0;
 
+	(void)arg;
 	count++;
 	printf("[Task C] Running (count=%d)\n", count);
 }
 
-/*==============================================
+/*==============================================================================
     MAIN
-================================================*/
+==============================================================================*/
 int	main(void)
 {
-	print_banner("Mini-RTOS");
-	printf("===\tTEST\t===\n\n");
+	ft_banner("Minirtos");
+	ft_printf("===\tTEST\t===\n\n");
 	if (rtos_init() != 0)
 	{
 		printf("Error\nrtos_init failed\n");
