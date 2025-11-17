@@ -1,4 +1,3 @@
-```markdown
 # Mini-RTOS - Cooperative Round-Robin Scheduler
 
 Mini-RTOS is a lightweight, educational Real-Time Operating System (RTOS) implemented in C, designed to explore and demonstrate core concepts of cooperative multitasking and task scheduling in embedded systems. This project is intended for personal learning, experimentation, and as a reference for building small-scale operating systems.
