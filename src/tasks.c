@@ -1,42 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   tasks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kebris-c <kebris-c@student.42madrid.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/17 18:44:49 by kebris-c          #+#    #+#             */
-/*   Updated: 2025/11/18 21:08:05 by kebris-c         ###   ########.fr       */
+/*   Created: 2025/11/18 17:10:05 by kebris-c          #+#    #+#             */
+/*   Updated: 2025/11/18 21:07:07 by kebris-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtos.h"
 
 /*==============================================================================
-    MAIN
+    TASKS
 ==============================================================================*/
-int	main(void)
+void	task_sensor(void *arg)
 {
-	ft_banner("Minirtos");
-	ft_printf("===\tTEST\t===\n\n");
-	if (rtos_init() != 0)
-	{
-		printf("Error\nrtos_init failed\n");
-		return (1);
-	}
-	if (queue_init() != 0)
-	{
-		printf("Error\nqueue_init failed\n");
-		return (1);
-	}
+    static int	count = 0;
 
-	if (rtos_task_create(task_sensor, NULL, 500) == -1 \
-		|| rtos_task_create(task_proc, NULL, 1000) == -1 \
-		|| rtos_task_create(task_thermal, NULL, 1000) == -1)
-	{
-		printf("Error\nrtos_task_create failed\n");
-		return (1);
-	}
-	rtos_start();
-	return (0);
+	(void)arg;
+	count++;
+	printf("[Task A] Running (count=%d)\n", count);
+}
+
+void	task_proc(void *arg)
+{
+	static int	count = 0;
+
+	(void)arg;
+	count++;
+	printf("[Task B] Running (count=%d)\n", count);
+}
+
+void	task_thermal(void *arg)
+{
+	static int	count = 0;
+
+	(void)arg;
+	count++;
+	printf("[Task C] Running (count=%d)\n", count);
 }

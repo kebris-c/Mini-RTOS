@@ -6,19 +6,18 @@
 /*   By: kebris-c <kebris-c@student.42madrid.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 18:47:44 by kebris-c          #+#    #+#             */
-/*   Updated: 2025/11/17 21:40:40 by kebris-c         ###   ########.fr       */
+/*   Updated: 2025/11/18 17:39:58 by kebris-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtos.h"
 
 /*==============================================================================
-	INTERNAL STATE (static globals)
+	INTERNAL STATE (extern globals)
 ==============================================================================*/
-static t_tcb		g_task_list[MAX_TASKS];
-static t_tcb		*g_curr_task;
-static int			g_num_tasks;
-static t_msg_queue	g_queue;
+t_tcb		g_task_list[MAX_TASKS];
+t_tcb		*g_curr_task;
+int			g_num_tasks;
 
 /*==============================================================================
 	INITIALIZATION
@@ -57,11 +56,9 @@ int	rtos_task_create(t_task_func func, void *arg, unsigned int period_ms)
 void	rtos_start(void)
 {
 	unsigned long	now;
-	unsigned long	last_print_info;
 	t_tcb			*task;
 	int				id;
 
-	last_print_info = 0;
 	printf("[RTOS] Starting scheduler with %d tasks\n", g_num_tasks);
 	while (1)
 	{
@@ -80,11 +77,6 @@ void	rtos_start(void)
 			if (task->period_ms > 0)
 				task->next_run = now + task->period_ms;
 		}
-		if (now - last_print_info >= 5000)
-		{
-			task_print_info();
-			last_print_info = now;
-		}
 		g_curr_task = NULL;
 		usleep(1000);
 	}
@@ -101,26 +93,4 @@ void	rtos_delay(unsigned int ms)
 		return ;
 	g_curr_task->next_run = get_time_ms() + ms;
 	rtos_yield();
-}
-
-/*==============================================================================
-	TESTING
-==============================================================================*/
-void	task_print_info(void)
-{
-	unsigned long	now;
-	t_tcb			*task;
-	int				id;
-
-	now = get_time_ms();
-	printf("\n[RTOS] Task Info (now = %lu):\n", now);
-	id = 0;
-	while (id < g_num_tasks)
-	{
-		task = &g_task_list[id];
-		printf("\tTask %d: state=%d, next_run=%lu, period=%u\n", \
-			task->id, task->state, task->next_run, task->period_ms);
-		id++;
-	}
-	printf("\n");
 }
