@@ -6,7 +6,7 @@
 /*   By: kebris-c <kebris-c@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 18:47:44 by kebris-c          #+#    #+#             */
-/*   Updated: 2025/11/27 02:50:54 by kebris-c         ###   ########.fr       */
+/*   Updated: 2025/11/27 15:43:29 by kebris-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static uint8_t	g_yield_requested = 0;
 int	rtos_init(void)
 {
 	int	i;
-	ft_memset(g_task_list, 0, sizeof(g_task_list));
+	memset(g_task_list, 0, sizeof(g_task_list));
 	g_curr_task = NULL;
 	g_num_tasks = 0;
 	i = 0;
@@ -106,7 +106,7 @@ void	rtos_start(void)
 			now = get_time_ms();
 			g_yield_requested = 0;
 			task = &g_task_list[id];
-			if (task->state != TASK_READY)
+			if (task->state == TASK_BLOCKED)
 				continue ;
 			if (now < task->next_run)
 				continue ;

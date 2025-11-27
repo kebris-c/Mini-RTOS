@@ -6,7 +6,7 @@
 /*   By: kebris-c <kebris-c@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 00:32:49 by kebris-c          #+#    #+#             */
-/*   Updated: 2025/11/27 03:00:07 by kebris-c         ###   ########.fr       */
+/*   Updated: 2025/11/27 15:21:10 by kebris-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	driver_adc_read(void)
 {
 	static int	adc_counter = 0;
 
+	printf("[ADC] Taking data\n");
 	adc_counter = (adc_counter + 100) % 4096;
 	return (adc_counter);
 }
@@ -53,5 +54,7 @@ void	driver_fan_set(int fan_id, int speed_percent)
  */
 void	driver_uart_send(const void *buffer, size_t len)
 {
+	printf("[UART] Sending data\n");
 	fwrite(buffer, 1, len, stdout);
+	fflush(stdout);
 }

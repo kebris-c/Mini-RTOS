@@ -6,7 +6,7 @@
 #    By: kebris-c <kebris-c@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/08 13:07:54 by kebris-c          #+#    #+#              #
-#    Updated: 2025/11/17 20:11:22 by kebris-c         ###   ########.fr        #
+#    Updated: 2025/11/27 15:03:54 by kebris-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -337,68 +337,36 @@ necessary_makes:
 #	Headers compilers
 #
 $(NAME): $(OBJS) | setup necessary_makes
-	@if [ ! -f $(NAME) ] || [ $(NAME) -ot $? ]; then \
-		$(AR) $(NAME) $(OBJS); \
-		echo "✅ $(NAME) built with main sources"; \
-	else \
-		echo "⏩ $(NAME) already up to date"; \
-	fi
+	$(AR) $(NAME) $(OBJS); \
+	echo "✅ $(NAME) built with main sources";
 
 $(N_RIGOR): $(OBJS) | setup necessary_makes
-	@if [ ! -f $(N_RIGOR) ] || [ $(N_RIGOR) -ot $? ]; then \
-		$(AR) $(N_RIGOR) $(OBJS); \
-		echo "✅ $(N_RIGOR) built with main sources"; \
-	else \
-		echo "⏩ $(N_RIGOR) already up to date"; \
-	fi
+	$(AR) $(N_RIGOR) $(OBJS); \
+	echo "✅ $(N_RIGOR) built with main sources";
 
 $(N_DBG): $(OBJS) | setup necessary_makes
-	@if [ ! -f $(N_DBG) ] || [ $(N_DBG) -ot $? ]; then \
-		$(AR) $(N_DBG) $(OBJS); \
-		echo "✅ $(N_DBG) built with main sources"; \
-	else \
-		echo "⏩ $(N_DBG) already up to date"; \
-	fi
+	$(AR) $(N_DBG) $(OBJS); \
+	echo "✅ $(N_DBG) built with main sources";
 
 $(N_GDB): $(OBJS) | setup necessary_makes
-	@if [ ! -f $(N_GDB) ] || [ $(N_GDB) -ot $? ]; then \
-		$(AR) $(N_GDB) $(OBJS); \
-		echo "✅ $(N_GDB) built with bonus sources"; \
-	else \
-		echo "⏩ $(N_GDB) already up to date"; \
-	fi
+	$(AR) $(N_GDB) $(OBJS); \
+	echo "✅ $(N_GDB) built with bonus sources";
 
 $(N_BONUS): $(B_OBJS) | setup necessary_makes
-	@if [ ! -f $(N_BONUS) ] || [ $(N_BONUS) -ot $? ]; then \
-		$(AR) $(N_BONUS) $(B_OBJS); \
-		echo "✅ $(N_BONUS) built with bonus sources"; \
-	else \
-		echo "⏩ $(N_BONUS) already up to date"; \
-	fi
+	$(AR) $(N_BONUS) $(B_OBJS); \
+	echo "✅ $(N_BONUS) built with bonus sources";
 
 $(N_B_RIGOR): $(B_OBJS) | setup necessary_makes
-	@if [ ! -f $(N_B_RIGOR) ] || [ $(N_B_RIGOR) -ot $? ]; then \
-		$(AR) $(N_B_RIGOR) $(B_OBJS); \
-		echo "✅ $(N_B_RIGOR) built with bonus sources"; \
-	else \
-		echo "⏩ $(N_B_RIGOR) already up to date"; \
-	fi
+	$(AR) $(N_B_RIGOR) $(B_OBJS); \
+	echo "✅ $(N_B_RIGOR) built with bonus sources";
 
 $(N_B_DBG): $(B_OBJS) | setup necessary_makes
-	@if [ ! -f $(N_B_DBG) ] || [ $(N_B_DBG) -ot $? ]; then \
-		$(AR) $(N_B_DBG) $(B_OBJS); \
-		echo "✅ $(N_B_DBG) built with bonus sources"; \
-	else \
-		echo "⏩ $(N_B_DBG) already up to date"; \
-	fi
+	$(AR) $(N_B_DBG) $(B_OBJS); \
+	echo "✅ $(N_B_DBG) built with bonus sources";
 
 $(N_B_GDB): $(B_OBJS) | setup necessary_makes
-	@if [ ! -f $(N_B_GDB) ] || [ $(N_B_GDB) -ot $? ]; then \
-		$(AR) $(N_B_GDB) $(B_OBJS); \
-		echo "✅ $(N_B_GDB) built with bonus sources"; \
-	else \
-		echo "⏩ $(N_B_GDB) already up to date"; \
-	fi
+	$(AR) $(N_B_GDB) $(B_OBJS); \
+	echo "✅ $(N_B_GDB) built with bonus sources";
 
 #	Objects & bonus objects Compilers
 #
@@ -451,11 +419,6 @@ re_dbg_bonus: fclean dbg_bonus
 #------------------------------------------------#
 
 $(PROJECT):
-	@if [ ! -f $(PROJECT) ] || [ $(PROJECT) -ot $(NAME) ]; then \
-		echo "🔄 Building $(PROJECT)..."; \
-	else \
-		echo "⏩ $(PROJECT) already up to date"; \
-	fi
 	$(call COMPILE_PROJECT,$(CFLAGS),$(MAIN_OBJ) $(NAME),$(PROJECT))
 	@if [ -f $(PROJECT) ]; then \
 		echo "✅ $(PROJECT) linked"; \
@@ -464,11 +427,6 @@ $(PROJECT):
 	fi
 
 $(P_RIGOR):
-	@if [ ! -f $(P_RIGOR) ] || [ $(P_RIGOR) -ot $(N_RIGOR) ]; then \
-		echo "🔄 Building $(P_RIGOR)..."; \
-	else \
-		echo "⏩ $(P_RIGOR) already up to date"; \
-	fi
 	$(call COMPILE_PROJECT,$(CEXTRAFLAGS),$(MAIN_OBJ) $(N_RIGOR),$(P_RIGOR))
 	@if [ -f $(P_RIGOR) ]; then \
 		echo "✅ $(P_RIGOR) linked"; \
@@ -477,11 +435,6 @@ $(P_RIGOR):
 	fi
 
 $(P_DBG):
-	@if [ ! -f $(P_DBG) ] || [ $(P_DBG) -ot $(N_DBG) ]; then \
-		echo "🔄 Building $(P_DBG)..."; \
-	else \
-		echo "⏩ $(P_DBG) already up to date"; \
-	fi
 	$(call COMPILE_PROJECT,,$(MAIN_OBJ) $(N_DBG),$(P_DBG))
 	@if [ -f $(P_DBG) ]; then \
 		echo "✅ $(P_DBG) linked"; \
@@ -490,11 +443,6 @@ $(P_DBG):
 	fi
 
 $(P_GDB):
-	@if [ ! -f $(P_GDB) ] || [ $(P_GDB) -ot $(N_GDB) ]; then \
-		echo "🔄 Building $(P_GDB)..."; \
-	else \
-		echo "⏩ $(P_GDB) already up to date"; \
-	fi
 	$(call COMPILE_PROJECT,$(GDBFLAGS),$(MAIN_OBJ) $(N_GDB),$(P_GDB))
 	@if [ -f $(P_GDB) ]; then \
 		echo "✅ $(P_GDB) linked"; \
@@ -503,11 +451,6 @@ $(P_GDB):
 	fi
 
 $(P_BONUS):
-	@if [ ! -f $(P_BONUS) ] || [ $(P_BONUS) -ot $(N_BONUS) ]; then \
-		echo "🔄 Building $(P_BONUS)..."; \
-	else \
-		echo "⏩ $(P_BONUS) already up to date"; \
-	fi
 	$(call COMPILE_PROJECT,$(CFLAGS),$(B_MAIN_OBJ) $(N_BONUS),$(P_BONUS))
 	@if [ -f $(P_BONUS) ]; then \
 		echo "✅ $(P_BONUS) linked"; \
@@ -516,11 +459,6 @@ $(P_BONUS):
 	fi
 
 $(P_B_RIGOR):
-	@if [ ! -f $(P_B_RIGOR) ] || [ $(P_B_RIGOR) -ot $(N_B_RIGOR) ]; then \
-		echo "🔄 Building $(P_B_RIGOR)..."; \
-	else \
-		echo "⏩ $(P_B_RIGOR) already up to date"; \
-	fi
 	$(call COMPILE_PROJECT,$(CEXTRAFLAGS),$(B_MAIN_OBJ) $(N_B_RIGOR),$(P_B_RIGOR))
 	@if [ -f $(P_B_RIGOR) ]; then \
 		echo "✅ $(P_B_RIGOR) linked"; \
@@ -529,11 +467,6 @@ $(P_B_RIGOR):
 	fi
 
 $(P_B_DBG):
-	@if [ ! -f $(P_B_DBG) ] || [ $(P_B_DBG) -ot $(N_B_DBG) ]; then \
-		echo "🔄 Building $(P_B_DBG)..."; \
-	else \
-		echo "⏩ $(P_B_DBG) already up to date"; \
-	fi
 	$(call COMPILE_PROJECT,,$(B_MAIN_OBJ) $(N_B_DBG),$(P_B_DBG))
 	@if [ -f $(P_B_DBG) ]; then \
 		echo "✅ $(P_B_DBG) linked"; \
@@ -542,11 +475,6 @@ $(P_B_DBG):
 	fi
 
 $(P_B_GDB):
-	@if [ ! -f $(P_B_GDB) ] || [ $(P_B_GDB) -ot $(N_B_GDB) ]; then \
-		echo "🔄 Building $(P_B_GDB)..."; \
-	else \
-		echo "⏩ $(P_B_GDB) already up to date"; \
-	fi
 	$(call COMPILE_PROJECT,$(GDBFLAGS),$(B_MAIN_OBJ) $(N_B_GDB),$(P_B_GDB))
 	@if [ -f $(P_B_GDB) ]; then \
 		echo "✅ $(P_B_GDB) linked"; \

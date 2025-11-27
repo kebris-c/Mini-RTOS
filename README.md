@@ -96,7 +96,7 @@ All tasks use a `pc` (program counter) variable to maintain state across yields,
 
 ```bash
 make
-./minirtos
+./bin/minirtos
 ````
 
 * Output simulates sensor readings, temperature processing, fan speeds, and UART logs.
@@ -124,12 +124,7 @@ MIT License. See `LICENSE` for details.
 
 Kevin, Educational Embedded Systems Project, 2025
 
-## Dependences
-
-* Make sense that this project in current state needs to include two more projects of my github: libft and banner.
-
 ## Notes
 
 * This RTOS is educational and does not include preemptive scheduling or hardware-specific drivers.
-* The project uses `libft` and `banner` modules to demonstrate modular design and linking with static libraries.
 * The scheduler implementation can be extended to include time slices, preemption, or inter-task communication for further learning purposes.

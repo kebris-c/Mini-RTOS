@@ -6,7 +6,7 @@
 /*   By: kebris-c <kebris-c@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 17:10:05 by kebris-c          #+#    #+#             */
-/*   Updated: 2025/11/27 03:00:52 by kebris-c         ###   ########.fr       */
+/*   Updated: 2025/11/27 14:54:24 by kebris-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	task_sensor(void *arg)
 {
 	static int16_t	adc_raw_data = 0;
 
+	(void)arg;
 	switch (g_curr_task->pc)
 	{
 		case (0):
@@ -58,10 +59,11 @@ void	task_proc(void *arg)
 	static int16_t	celsius = 0;
 	static int		fan_speed_percent = 0;
 
+	(void)arg;
 	switch (g_curr_task->pc)
 	{
 		case (0):
-			if (queue_recv_msg(QUEUE_SENSOR, &raw, sizeof(int)) == -1)
+			if (queue_recv_msg(QUEUE_SENSOR, &raw, sizeof(raw)) == -1)
 			{
 				rtos_yield();
 				return ;
@@ -113,6 +115,7 @@ void	task_logger(void *arg)
 	static char		buf[64];
 	int				len;
 
+	(void)arg;
 	switch (g_curr_task->pc)
 	{
 		case (0):

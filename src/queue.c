@@ -6,7 +6,7 @@
 /*   By: kebris-c <kebris-c@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 17:25:20 by kebris-c          #+#    #+#             */
-/*   Updated: 2025/11/27 02:59:09 by kebris-c         ###   ########.fr       */
+/*   Updated: 2025/11/27 15:25:32 by kebris-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	queue_send_msg(int queue_id, const void *data, size_t size)
 	dest = q->buffer + (q->tail * q->item_size);
 	if (size > q->item_size)
 		size = q->item_size;
-	ft_memcpy(dest, data, size);
+	memcpy(dest, data, size);
 	q->tail = (q->tail + 1) % q->capacity;
 	q->count++;
 	i = 0;
@@ -120,7 +120,7 @@ int	queue_recv_msg(int queue_id, void *buffer, size_t size)
 	src = q->buffer + (q->head * q->item_size);
 	if (size > q->item_size)
 		size = q->item_size;
-	ft_memcpy(buffer, src, size);
+	memcpy(buffer, src, size);
 	q->head = (q->head + 1) % q->capacity;
 	q->count--;
 	return (0);
