@@ -1,120 +1,128 @@
-# Mini-RTOS - Cooperative Round-Robin Scheduler
+# MiniRTOS - Educational Cooperative RTOS in C
 
-Mini-RTOS is a lightweight, educational Real-Time Operating System (RTOS) implemented in C, designed to explore and demonstrate core concepts of cooperative multitasking and task scheduling in embedded systems. This project is intended for personal learning, experimentation, and as a reference for building small-scale operating systems.
+![C](https://img.shields.io/badge/Language-C-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
 
----
+## Overview
 
-## Table of Contents
+**MiniRTOS** is a small, educational Real-Time Operating System (RTOS) implemented in C, designed to simulate task scheduling, inter-task communication, and simple peripheral interactions. It is **cooperative** (non-preemptive) but demonstrates the core concepts of multitasking, task delays, message queues, and hardware abstraction.
 
-- [Project Overview](#project-overview)  
-- [Features](#features)  
-- [Project Structure](#project-structure)  
-- [Building the Project](#building-the-project)  
-- [Usage](#usage)  
-- [Contributing](#contributing)  
-- [License](#license)  
-
----
-
-## Project Overview
-
-The goal of Mini-RTOS is to implement a **cooperative round-robin scheduler** in a small-scale RTOS environment. The project emphasizes:
-
-- **Task management:** Creating, switching, and scheduling multiple tasks.  
-- **Cooperative scheduling:** Tasks voluntarily yield control to allow multitasking.  
-- **Modular design:** Separated components for ease of extension and experimentation.  
-- **Integration with custom libraries:** Utilizes a small utility library (`libft`) and a banner module for demonstration and logging purposes.
-
-This project serves as a foundation for understanding the internals of an RTOS without the complexity of full preemptive multitasking or hardware-specific constraints.
+This project was built as a learning exercise in embedded systems, RTOS principles, and cooperative scheduling.
 
 ---
 
 ## Features
 
-- Cooperative round-robin task scheduler.  
-- Simple task API for creating, running, and yielding tasks.  
-- Task queuing and management using linked lists.  
-- Integration with a custom `libft` library for utility functions.  
-- Banner module to provide formatted output and visual feedback.  
-- Modular Makefile system, building both sub-libraries and the main RTOS.  
+- Cooperative round-robin scheduler
+- Task management with periodicity and voluntary yield
+- Simple message queues for inter-task communication
+- Task blocking and unblocking via queues
+- Task delay mechanism (`rtos_delay`)
+- Simulated ADC sensor, fans, and UART logging
+- Modular and reusable code structure
+- Educational comments and function-level documentation
 
 ---
 
-## Project Structure
+## Tasks
 
-```
-````
+- **task_sensor**: Simulates a 12-bit ADC reading. Sends raw data to `QUEUE_SENSOR`.
+- **task_proc**: Receives raw ADC values, converts to Celsius, determines fan speeds, and forwards data to `QUEUE_PROC`.
+- **task_logger**: Receives processed temperature data and prints logs via UART simulation.
 
-**Key modules:**
-
-- `libft` – Custom utility library including string, memory, and matrix operations.  
-- `banner` – Module for ASCII banners and formatted logging.  
-- `src/` – Core RTOS source code: scheduler, task management, and main program.
+All tasks use a `pc` (program counter) variable to maintain state across yields, allowing cooperative multitasking.
 
 ---
 
-## Building the Project
+## Message Queues
 
-This project uses a **modular Makefile system** that compiles sub-libraries (`libft` and `banner`) first, then links them with the main RTOS sources.
+- Each queue has fixed item size (`ITEM_SIZE`) and capacity (`CAPACITY`).
+- Implemented as circular buffers using `uint8_t` for generic storage.
+- Tasks can block on empty queues and are automatically unblocked when new data arrives.
+- Example queues:
+  - `QUEUE_SENSOR`: sensor → processor
+  - `QUEUE_PROC`: processor → logger
+  - `QUEUE_LOGGER`: (optional, centralized logging)
 
-### Prerequisites
+---
 
-- C compiler (`clang` or `gcc`)  
-- GNU Make  
+## Scheduler
 
-### Compilation
+- **Cooperative**, not preemptive:
+  - Tasks must yield explicitly via `rtos_yield()` or `rtos_delay()`.
+  - Round-robin traversal ensures fairness between READY tasks.
+- Optional `rtos_delay(ms)`:
+  - Sets the task's next run time.
+  - Yields automatically to allow other tasks to execute.
+- Design choice: cooperative scheduling simplifies state management and is easier to understand for educational purposes.
 
-From the project root:
+---
+
+## Drivers Simulation
+
+- **ADC**: Generates increasing counter values (0–4095) to simulate a 12-bit ADC.
+- **Fans**: Simulated by printing the fan ID and speed percentage.
+- **UART**: Logs via `fwrite` to `stdout`.
+- Notes: All drivers are placeholders for real embedded hardware.
+
+---
+
+## Design Decisions & Tips
+
+1. **Cooperative vs Preemptive**:  
+   Cooperative simplifies debugging, avoids race conditions, and allows easy demonstration of task yielding and blocking.
+
+2. **`uint8_t` buffers for queues**:  
+   Using bytes allows generic message storage regardless of actual data type, simplifying queue design.
+
+3. **Task `pc` and static variables**:  
+   These emulate a “thread context” in a cooperative scheduler, allowing partial execution over multiple cycles.
+
+4. **Yielding and delays**:  
+   - `rtos_yield()` is used to give up CPU voluntarily.
+   - `rtos_delay(ms)` lets tasks wait for a specified period without blocking the entire scheduler.
+
+5. **Driver abstractions**:  
+   - Each hardware interaction is encapsulated in a function.
+   - Makes it easy to replace simulated drivers with real hardware code.
+
+6. **Queue blocking/unblocking**:  
+   - When a task tries to read from an empty queue, it is marked BLOCKED.
+   - Sending a message to that queue automatically marks the task READY again.
+
+---
+
+## How to Compile and Run
 
 ```bash
 make
+./minirtos
 ````
 
-This will:
-
-1. Compile `libft` and `banner` into static libraries (`.a`).
-2. Compile the RTOS source files into object files.
-3. Link all objects and libraries into the final executable `bin/minirtos`.
-
-### Cleaning
-
-```bash
-make help        # Show help message with other rules
-make clean       # Remove object files
-make fclean      # Remove object files and binaries
-```
+* Output simulates sensor readings, temperature processing, fan speeds, and UART logs.
+* Tasks run with cooperative multitasking, demonstrating yields and delays.
 
 ---
 
-## Usage
+## Learning Outcomes
 
-After building, run the MiniRTOS executable:
-
-```bash
-./bin/minirtos
-```
-
-Currently, the RTOS demonstrates cooperative task scheduling with sample tasks defined in `main.c`. Tasks yield control voluntarily, showing the round-robin behavior in the console.
-
----
-
-## Contributing
-
-This project is primarily for personal learning, but contributions for:
-
-* Bug fixes
-* Documentation improvements
-* Adding additional scheduler features
-
-are welcome via pull requests.
+* Understanding cooperative scheduling in RTOS.
+* Implementing task delays and yields.
+* Managing inter-task communication with message queues.
+* Structuring embedded C code modularly for simulation and testing.
+* Familiarity with ADC, UART, and actuator (fan) abstractions.
 
 ---
 
 ## License
 
-This project is released under the MIT License. See `LICENSE` for details.
+MIT License. See `LICENSE` for details.
 
 ---
+
+## Author
+
+Kevin, Educational Embedded Systems Project, 2025
 
 ## Dependences
 
@@ -125,6 +133,3 @@ This project is released under the MIT License. See `LICENSE` for details.
 * This RTOS is educational and does not include preemptive scheduling or hardware-specific drivers.
 * The project uses `libft` and `banner` modules to demonstrate modular design and linking with static libraries.
 * The scheduler implementation can be extended to include time slices, preemption, or inter-task communication for further learning purposes.
-
-```
-
